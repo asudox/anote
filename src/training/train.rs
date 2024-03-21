@@ -1,7 +1,7 @@
 use crate::algorithm::calculate_genre_combo;
 use crate::db::ops::{add_animes, add_genre_combo};
 use crate::schema::genre_combos;
-use crate::utils::get_user_animelist;
+use crate::utils::{get_config, get_user_animelist};
 use diesel::delete;
 use diesel_async::pooled_connection::deadpool::Pool;
 use diesel_async::{AsyncPgConnection, RunQueryDsl};
@@ -16,12 +16,12 @@ use std::{thread, time::Duration};
 /// Additionally it will truncate the anime_scores AND genre_combos table in the database
 pub async fn begin_training(db_pool: Pool<AsyncPgConnection>) {
     let mut conn = db_pool.get().await.unwrap();
+    let config = get_config();
 
     let mut file = File::open("usernames.txt").unwrap();
     let mut buf = String::new();
     file.read_to_string(&mut buf).unwrap();
     let usernames: Vec<&str> = buf.split('\n').collect();
-    //TODO take a slice from usernames with the max length of config.training.TRAINING_LIMIT
 
     tracing::debug!("Read usernames from file");
 
@@ -35,7 +35,7 @@ pub async fn begin_training(db_pool: Pool<AsyncPgConnection>) {
         .unwrap();
     tracing::info!("Truncation finished");
 
-    for username in usernames {
+    for username in &usernames[0..config.training.TRAINING_LIMIT as usize] {
         thread::sleep(Duration::from_secs_f32(0.5));
         let animelist_res = get_user_animelist(username).await;
         match animelist_res {
