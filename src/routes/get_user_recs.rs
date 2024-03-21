@@ -120,6 +120,13 @@ pub async fn get_user_recommendations(
                     "User AnimeList is private".to_string(),
                 ))
             }
+            StatusCode::GATEWAY_TIMEOUT => {
+                tracing::debug!("{}'s AnimeList request timed out", params.username);
+                Err(ANError::new(
+                    StatusCode::GATEWAY_TIMEOUT,
+                    "User AnimeList request timed out, try again in a few seconds".to_string(),
+                ))
+            }
             _ => {
                 tracing::debug!(
                     "Unexpected error occured: {}\nUsername: {}",
