@@ -8,7 +8,7 @@ DB_PASSWORD = ""
 CLIENT_ID = ""
 
 [training]
-BEGIN_TRAINING = false    # WARNING: If set to true, the train::begin_training function will be called which will truncate the genre_combos table which will also delete all the columns in anime_rankings AND cached_genre_combos
+BEGIN_TRAINING = false    # WARNING: If set to true, the train::begin_training function will be called which will TRUNCATE the genre_combos table which will also delete all the columns in anime_scores AND cached_genre_combos
 TRAINING_LIMIT = 500_000
 
 [anote]
