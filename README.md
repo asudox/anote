@@ -35,7 +35,7 @@ I believe this will help avoid newbies getting inaccurate recommendations. I mea
 - [ ] Add titles to anime cards in the recommendations page
 - [ ] Use the user's favorite animes as a way to improve their genre combination calculation
 - [ ] Add queueing function to avoid getting rate limited by MAL
-      <br>or
+      <br>OR
 - [ ] Get the user's animelist directly from the client-side
 
 ## License
