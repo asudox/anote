@@ -1,0 +1,179 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(36, 39, 41);
+    margin-bottom: 3vh;
+    color: white;
+}
+
+header {
+    background-color: rgb(24, 26, 27);
+    font-family: monospace, Arial;
+    font-weight: lighter;
+    font-size: 1.5em;
+    text-align: center;
+    padding-top: 10px;
+    width: 100%;
+    position: fixed;
+    border-bottom: 1px solid white;
+    box-shadow: 0 0 10px white;
+    padding-bottom: 1vh;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+}
+
+#page-title {
+    text-decoration: none;
+}
+
+#mal-username {
+    width: 100%;
+    height: 3vh;
+    border-radius: 30px;
+    text-align: center;
+    font-size: large;
+    border: 1px solid white;
+    outline: none;
+    transition: 0.2s;
+}
+
+#recommendations {
+    display: flex;
+    flex-flow: row wrap;
+    margin-inline: auto;
+    width: 85%;
+    justify-content: space-evenly;
+}
+
+#top-3-animes {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    margin-inline: auto;
+    width: 70%;
+    margin-top: 5vh;
+    padding-bottom: 5vh;
+}
+
+#top-3-animes h1 {
+    width: 100%;
+    text-align: center;
+    margin-top: 5vh;
+}
+
+#top-animes-line {
+    width: 100%;
+    border-bottom: 5px solid white;
+    border-radius: 15px;
+    box-shadow: 0 0 15px white;
+}
+
+.anime-card {
+    height: auto;
+    margin-top: 6vh;
+    margin-inline: auto;
+    padding: 2vh;
+    width: 11vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.anime-card img {
+    border-radius: 15px;
+    width: 100%;
+    border: 3px solid white;
+    transition: 0.2s;
+}
+
+.anime-card img:hover,
+#mal-username:hover,
+#mal-username:focus {
+    box-shadow: 0 0 15px white;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.input-card {
+    padding: 3vw;
+    height: auto;
+    min-height: 10vh;
+    margin: 10px;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-card h3 {
+    text-align: center;
+}
+
+.text-card {
+    padding: 3vw;
+    margin: 3vh;
+    width: 50vw;
+    height: auto;
+    min-height: 20vh;
+}
+
+.text-card a {
+    color: white;
+}
+
+.error-box {
+    background-color: red;
+    margin-top: 35vh;
+    padding: 3vw;
+    width: 30vw;
+    height: auto;
+    min-height: 15vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    border: 1px solid red;
+    border-radius: 15px;
+}
+
+@media (max-width: 800px) {
+    .input-card {
+        width: 80vw;
+        height: 20vh;
+    }
+
+    .text-card {
+        width: 80vw;
+        height: auto;
+        min-height: 25vh;
+    }
+
+    .error-box {
+        width: 80vw;
+        height: auto;
+        min-height: 25vh;
+    }
+
+    #recommendations {
+        flex-direction: column;
+    }
+
+    .anime-card {
+        width: 47vw;
+    }
+}

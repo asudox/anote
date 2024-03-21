@@ -1,0 +1,17 @@
+[database]
+DB_HOST = ""
+DB_NAME = ""
+DB_USERNAME = ""
+DB_PASSWORD = ""
+
+[myanimelist]
+CLIENT_ID = ""
+
+[training]
+BEGIN_TRAINING = false    # WARNING: If set to true, the train::begin_training function will be called which will truncate the genre_combos table which will also delete all the columns in anime_rankings AND cached_genre_combos
+TRAINING_LIMIT = 500_000
+
+[anote]
+TRACING_MAXIMUM_LEVEL = "debug"          # "error", "warn", "info", "debug", or "trace"
+MINIMUM_ANIMELIST_SIZE = 50             # must be bigger than 10
+CACHED_GENRE_COMBO_EXPIRATION_TIME = 24 # in hours (can't be 0)

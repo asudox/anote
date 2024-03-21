@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>anote</title>
+</head>
+
+{% include "header.html" %}
+
+<body>
+    <div class="content">
+        <div class="error-box">
+            <h2>An error occurred</h2>
+            <h4>{{ error.context }}</h4>
+            <h6>{{ error.status_code }}</h6>
+        </div>
+    </div>
+</body>
+
+</html>

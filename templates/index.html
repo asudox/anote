@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>anote</title>
+</head>
+
+{% include "header.html" %}
+
+<body>
+    <div class="content">
+        <form class="input-card" action="/get_recommendations" method="GET">
+            <h3>Enter your MyAnimeList username to get started!</h3>
+            <input type="text" id="mal-username" name="username" autofocus>
+        </form>
+        <div class="text-card">
+            <h1>What is anote?</h1>
+            <p>anote is an open-source Rust project to recommend MyAnimeList users animes based on their calculated
+                genre
+                combinations. The source code <a href="https://github.com/Asudox/anote">can be found here.</a>
+                <br><br>
+                <sup>
+                    NOTE: Training data is taken
+                    from thousands of MyAnimeList users' public animelists.
+                </sup>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
