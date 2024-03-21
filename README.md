@@ -31,5 +31,9 @@ Romance (22) comes first. This means that the algorithm has determined that Roma
 3. The `MINIMUM_ANIMELIST_SIZE` configuration in `anote.toml` is why you might get the `User AnimeList is too small` error in the website. This value can be lowered to a minimum of 10 but I decided to go with 50.
 I believe this will help avoid newbies getting inaccurate recommendations. I mean, why are they even here. They have a lot more to discover 50 animes is nothing, so why use this as a discovery tool? Am I right?
 
+## TODO
+- [ ] Add titles to anime cards in the recommendations page
+- [ ] Use the user's favorite animes as a way to improve their genre combination calculation
+
 ## License
 This project is licensed under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.html).
