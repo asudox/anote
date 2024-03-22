@@ -32,7 +32,7 @@ Romance (22) comes first. This means that the algorithm has determined that Roma
 I believe this will help avoid newbies getting inaccurate recommendations. I mean, why are they even here. They have a lot more to discover 50 animes is nothing, so why use this as a discovery tool? Am I right?
 
 ## TODO
-- [ ] Add titles to anime cards in the recommendations page
+- [ x ] Add titles to anime cards in the recommendations page
 - [ ] Use the user's favorite animes as a way to improve their genre combination calculation
 - [ ] Add queueing function to avoid getting rate limited by MAL
       <br>-- OR --
