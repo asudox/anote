@@ -20,3 +20,23 @@ If a genre combination already exists, we add the current genre combinations ani
 
 By knowing the genre combination of a user, we can retrieve the anime scores (with the animes associated with them) that have defined a relationship with the user's genre combination.
 
+## Things you should know
+1. Your genre combination is dependant on how you score your animes. If you don't rate them carefully and just spit out a random number, your genre combination will differ than what you say you like.
+A genre combination looks like this: 22010010
+And there is a order in this large number that does not make any sense to you. For example, the first number is 22, the second 10 and the third is 1 (the extra zero you see after each genre ID is used as a seperator)
+Romance (22) comes first. This means that the algorithm has determined that Romance objectively was the most liked genre.
+
+2. The recommendations you get are not guaranteed to be to your liking. The recommendations are simply animes that come from other users that had the same genre combination as you. The "Top 3 Animes" you see on the website are the highest scored ones, meaning they were the most watched ones among your genre combination group.
+
+3. The `MINIMUM_ANIMELIST_SIZE` configuration in `anote.toml` is why you might get the `User AnimeList is too small` error in the website. This value can be lowered to a minimum of 10 but I decided to go with 50.
+I believe this will help avoid newbies getting inaccurate recommendations. I mean, why are they even here. They have a lot more to discover 50 animes is nothing, so why use this as a discovery tool? Am I right?
+
+## TODO
+- [ ] Add titles to anime cards in the recommendations page
+- [ ] Use the user's favorite animes as a way to improve their genre combination calculation
+- [ ] Add queueing function to avoid getting rate limited by MAL
+      <br>OR
+- [ ] Get the user's animelist directly from the client-side
+
+## License
+This project is licensed under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.html).
