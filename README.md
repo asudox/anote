@@ -37,6 +37,7 @@ I believe this will help avoid newbies getting inaccurate recommendations. I mea
 - [ ] Add queueing function to avoid getting rate limited by MAL
       <br>-- OR --
 - [ ] Get the user's animelist directly from the client-side
+- [ ] Exclude user's already watched animes from the recommendations
 
 ## License
 This project is licensed under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.html).
