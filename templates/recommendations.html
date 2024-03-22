@@ -14,20 +14,26 @@
         <div id="top-3-animes">
             <h1>Top 3 Animes</h1>
             {% for recommendation in recommendations.anime_scores[0..3] %}
-                <a href="https://myanimelist.net/anime/{{ recommendation.0.id }}">
-                    <div class="anime-card">
-                        <img src="{{ recommendation.0.main_picture_url }}">
+            <a href="https://myanimelist.net/anime/{{ recommendation.0.id }}">
+                <div class="anime-card">
+                    <img src="{{ recommendation.0.main_picture_url }}">
+                    <div class="anime-card-overlay">
+                        <h4>{{ recommendation.0.romaji_title }}</h4>
                     </div>
-                </a>
+                </div>
+            </a>
             {% endfor %}
         </div>
         <div id="top-animes-line"></div>
         {% for recommendation in recommendations.anime_scores[3..] %}
-            <a href="https://myanimelist.net/anime/{{ recommendation.0.id }}">
-                <div class="anime-card">
-                    <img src="{{ recommendation.0.main_picture_url }}">
+        <a href="https://myanimelist.net/anime/{{ recommendation.0.id }}">
+            <div class="anime-card">
+                <img src="{{ recommendation.0.main_picture_url }}">
+                <div class="anime-card-overlay">
+                    <h4>{{ recommendation.0.romaji_title }}</h4>
                 </div>
-            </a>
+            </div>
+        </a>
         {% endfor %}
     </div>
 </body>
