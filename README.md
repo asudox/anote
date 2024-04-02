@@ -1,6 +1,6 @@
 # anote
 anote is a MyAnimeList-based anime recommendation system written in Rust. It uses genre combinations to determine what recommendations to give which MAL user.
-This project is trained on hundreds of thousands of public animelists in MAL.
+This project is trained on hundreds of thousands of public animelists from MAL.
 
 ## The formula
 The formula for calculating the weight of genres an anime has:
