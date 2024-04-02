@@ -11,7 +11,7 @@ pub async fn calculate_genre_combo(mut user_animelist: AnimeList) -> GenreCombo 
 
         //$ formula for the genre weight calculation
         let genre_weight = list_status.score
-            * (list_status.num_times_rewatched as u32 + list_status.is_rewatching as u32 + 1);
+            * (list_status.num_times_rewatched as u32) * (list_status.is_rewatching as u32 + 1);
 
         for genre in anime_node.anime.genres.as_ref().unwrap().iter() {
             genre_weights
