@@ -5,7 +5,7 @@ This project is trained on hundreds of thousands of public animelists in MAL.
 ## The formula
 The formula for calculating the weight of genres an anime has:
 <br>
-`anime score * (times rewatched + 1 + is rewatching + 1)`
+`anime score * (times rewatched + 1) * (is_rewatching + 1)`
 
 ## How it works
 Genre combinations are basically used to find similar users' anime entries.
