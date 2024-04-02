@@ -12,17 +12,17 @@ use diesel_async::AsyncPgConnection;
 use serde::{Deserialize, Serialize};
 // use std::collections::HashMap;
 
-#[derive(Debug, Deserialize, Serialize, Eq, PartialEq, Clone)]
+#[derive(Deserialize, Serialize, Eq, PartialEq, Clone)]
 pub struct ImagesView {
     pub large: String,
 }
 
-#[derive(Debug, Deserialize, Serialize, Eq, PartialEq, Clone)]
+#[derive(Deserialize, Serialize, Eq, PartialEq, Clone)]
 pub struct Genre {
     pub id: u8,
 }
 
-#[derive(Debug, Deserialize, Serialize, Eq, PartialEq, Clone)]
+#[derive(Deserialize, Serialize, Eq, PartialEq, Clone)]
 pub struct Anime {
     pub id: i32,
     pub title: String,
@@ -33,7 +33,7 @@ pub struct Anime {
     pub num_episodes: u16,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct AnimeList {
     pub data: Vec<AnimeNode>,
 }
@@ -48,14 +48,14 @@ impl AnimeList {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct AnimeNode {
     #[serde(rename = "node")]
     pub anime: Anime,
     pub list_status: AnimeListStatus,
 }
 
-#[derive(Debug, Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone)]
 pub struct AnimeListStatus {
     pub score: u32,
     pub num_times_rewatched: u8,
@@ -83,7 +83,7 @@ impl IntoResponse for ANError {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Deserialize, Serialize)]
 pub struct GenreCombo {
     pub id: i32,
     pub anime_ids: Vec<i32>,
@@ -94,7 +94,6 @@ pub struct AppState {
     pub db_pool: Pool<AsyncPgConnection>,
 }
 
-#[derive(Debug)]
 pub struct DbGenreComboWithAnimeScores {
     pub genre_combo: DbGenreCombo,
     pub anime_scores: Vec<(DbAnime, u32)>,
@@ -118,7 +117,8 @@ pub struct TOMLConfig {
     pub anote: ANConfigTable,
 }
 
-#[allow(non_snake_case)]
+#[allow(non_snake_case)]#[derive(Debug)]
+
 #[derive(Deserialize)]
 pub struct DbConfigTable {
     pub DB_HOST: String,

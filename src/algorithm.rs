@@ -3,7 +3,6 @@ use std::collections::HashMap;
 
 const GENRE_IDS: [u8; 17] = [1, 2, 5, 46, 28, 4, 8, 10, 26, 47, 14, 7, 22, 36, 30, 37, 41];
 
-// IDEA: Check if animelist is small or not?
 /// This function is used to calculate the genre combo of an AnimeList.
 pub async fn calculate_genre_combo(mut user_animelist: AnimeList) -> GenreCombo {
     let mut genre_weights: HashMap<u8, u32> = HashMap::with_capacity(user_animelist.data.len() / 2); // the capacity is just a guess
@@ -37,7 +36,7 @@ pub async fn calculate_genre_combo(mut user_animelist: AnimeList) -> GenreCombo 
 
     //if genre_weights_vec.len() < 3 {
     //   return Err(MNAError::new("MAL User's fetched amount of genres is too small to convert into a genre combo ID. (genre amount < 3)"));
-    //}
+    //}.
 
     // sort genres by weight and make genre_combo_id
     genre_weights_vec.sort_by(|a, b| b.1.cmp(&a.1));
