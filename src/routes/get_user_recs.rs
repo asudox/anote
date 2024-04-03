@@ -2,8 +2,8 @@ use crate::algorithm::calculate_genre_combo;
 use crate::db::ops::{add_cached_genre_combo, get_genre_combo_with_rankings};
 use crate::db::DbCachedGenreCombo;
 use crate::structs::{ANError, AnimeList, AppState, DbGenreComboWithAnimeScores};
-use crate::utils::get_config;
 use crate::utils::filter_watched_animes;
+use crate::utils::get_config;
 use crate::utils::get_user_animelist;
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
@@ -39,7 +39,7 @@ pub async fn get_user_recommendations(
         .unwrap();
 
     let animelist_res: Result<Option<AnimeList>, reqwest::Error> =
-    get_user_animelist(params.username.as_str()).await;
+        get_user_animelist(params.username.as_str()).await;
 
     if let Err(e) = animelist_res {
         // convert the status code inside reqwest::Error into a normal StatusCode for us to display
@@ -83,10 +83,17 @@ pub async fn get_user_recommendations(
 
     // check if the user's animelist is too small (less than MINIMUM_ANIMELIST_SIZE animes)
     if animelist_opt.is_none() {
-        tracing::debug!("{} AnimeList is too small (minimum: {})", params.username, config.anote.MINIMUM_ANIMELIST_SIZE);
+        tracing::debug!(
+            "{} AnimeList is too small (minimum: {})",
+            params.username,
+            config.anote.MINIMUM_ANIMELIST_SIZE
+        );
         return Err(ANError::new(
             StatusCode::BAD_REQUEST,
-            format!("User AnimeList is too small (minimum: {})", config.anote.MINIMUM_ANIMELIST_SIZE),
+            format!(
+                "User AnimeList is too small (minimum: {})",
+                config.anote.MINIMUM_ANIMELIST_SIZE
+            ),
         ));
     }
 
@@ -127,7 +134,8 @@ pub async fn get_user_recommendations(
             } else {
                 match get_genre_combo_with_rankings(&mut conn, cached_gc.genre_combo_id).await {
                     Ok(mut db_genre_combo) => {
-                        filter_watched_animes(animelist.animes().as_ref(), &mut db_genre_combo).await;
+                        filter_watched_animes(animelist.animes().as_ref(), &mut db_genre_combo)
+                            .await;
                         return Ok(db_genre_combo);
                     }
                     // no need to check what type the error is whether it is NOT_FOUND or something else. If the cached genre combo is found, there also should be a genre combo in the database. If there isn't any, it should be treated as an error
