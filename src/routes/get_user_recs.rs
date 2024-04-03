@@ -3,6 +3,7 @@ use crate::db::ops::{add_cached_genre_combo, get_genre_combo_with_rankings};
 use crate::db::DbCachedGenreCombo;
 use crate::structs::{ANError, AnimeList, AppState, DbGenreComboWithAnimeScores};
 use crate::utils::get_config;
+use crate::utils::filter_watched_animes;
 use crate::utils::get_user_animelist;
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
@@ -37,69 +38,8 @@ pub async fn get_user_recommendations(
         })
         .unwrap();
 
-    let cached_gc: Result<DbCachedGenreCombo, _> = cached_genre_combos
-        .find(params.username.as_str())
-        .first(&mut conn)
-        .await;
-
-    // check if user's animelist is cached or not
-    match cached_gc {
-        Ok(cached_gc) => {
-            // check if the cached genre combo is still valid (not expired)
-            let cached_gc_expiration_time_time_delta = TimeDelta::from_std(Duration::from_secs(
-                (config.anote.CACHED_GENRE_COMBO_EXPIRATION_TIME as u32 * 3600) as u64,
-            ))
-            .unwrap();
-            if (Utc::now().naive_utc() - cached_gc.cached_at)
-                >= cached_gc_expiration_time_time_delta
-            {
-                tracing::debug!(
-                    "{}'s cached genre combo will now be expired",
-                    params.username
-                );
-                // cache invalidation
-                diesel::delete(cached_genre_combos.find(&params.username))
-                    .execute(&mut conn)
-                    .await
-                    .map_err(|e| {
-                        tracing::error!("Failed to invalidate {}'s cached genre combo: {}", params.username, e.to_string());
-                        ANError::new(
-                            StatusCode::INTERNAL_SERVER_ERROR,
-                            "This user's cached genre combo could not be invalidated, try again later...".to_string(),
-                        )
-                    })
-                    .ok();
-            } else {
-                match get_genre_combo_with_rankings(&mut conn, cached_gc.genre_combo_id).await {
-                    Ok(db_genre_combo) => {
-                        return Ok(db_genre_combo);
-                    }
-                    // no need to check what type the error is whether it is NOT_FOUND or something else. If the cached genre combo is found, there also should be a genre combo in the database. If there isn't any, it should be treated as an error
-                    Err(e) => {
-                        return Err(ANError::new(
-                            StatusCode::INTERNAL_SERVER_ERROR,
-                            e.to_string(),
-                        ));
-                    }
-                }
-            }
-        }
-        Err(e) => match e {
-            // no other code other than the debug since we want to continue the process if no cached genre combo is found
-            DieselError::NotFound => {
-                tracing::debug!("{}'s Genre combo not found in the cache", params.username);
-            }
-            _ => {
-                return Err(ANError::new(
-                    StatusCode::INTERNAL_SERVER_ERROR,
-                    e.to_string(),
-                ));
-            }
-        },
-    }
-
     let animelist_res: Result<Option<AnimeList>, reqwest::Error> =
-        get_user_animelist(params.username.as_str()).await;
+    get_user_animelist(params.username.as_str()).await;
 
     if let Err(e) = animelist_res {
         // convert the status code inside reqwest::Error into a normal StatusCode for us to display
@@ -150,9 +90,73 @@ pub async fn get_user_recommendations(
         ));
     }
 
+    let animelist = animelist_opt.unwrap();
+
+    let cached_gc: Result<DbCachedGenreCombo, _> = cached_genre_combos
+        .find(params.username.as_str())
+        .first(&mut conn)
+        .await;
+
+    // check if user's animelist is cached or not
+    match cached_gc {
+        Ok(cached_gc) => {
+            // check if the cached genre combo is still valid (not expired)
+            let cached_gc_expiration_time_time_delta = TimeDelta::from_std(Duration::from_secs(
+                (config.anote.CACHED_GENRE_COMBO_EXPIRATION_TIME as u32 * 3600) as u64,
+            ))
+            .unwrap();
+            if (Utc::now().naive_utc() - cached_gc.cached_at)
+                >= cached_gc_expiration_time_time_delta
+            {
+                tracing::debug!(
+                    "{}'s cached genre combo will now be expired",
+                    params.username
+                );
+                // cache invalidation
+                diesel::delete(cached_genre_combos.find(&params.username))
+                    .execute(&mut conn)
+                    .await
+                    .map_err(|e| {
+                        tracing::error!("Failed to invalidate {}'s cached genre combo: {}", params.username, e.to_string());
+                        ANError::new(
+                            StatusCode::INTERNAL_SERVER_ERROR,
+                            "This user's cached genre combo could not be invalidated, try again later...".to_string(),
+                        )
+                    })
+                    .ok();
+            } else {
+                match get_genre_combo_with_rankings(&mut conn, cached_gc.genre_combo_id).await {
+                    Ok(mut db_genre_combo) => {
+                        filter_watched_animes(animelist.animes().as_ref(), &mut db_genre_combo).await;
+                        return Ok(db_genre_combo);
+                    }
+                    // no need to check what type the error is whether it is NOT_FOUND or something else. If the cached genre combo is found, there also should be a genre combo in the database. If there isn't any, it should be treated as an error
+                    Err(e) => {
+                        return Err(ANError::new(
+                            StatusCode::INTERNAL_SERVER_ERROR,
+                            e.to_string(),
+                        ));
+                    }
+                }
+            }
+        }
+        Err(e) => match e {
+            // no other code other than the debug since we want to continue the process if no cached genre combo is found
+            DieselError::NotFound => {
+                tracing::debug!("{}'s Genre combo not found in the cache", params.username);
+            }
+            _ => {
+                return Err(ANError::new(
+                    StatusCode::INTERNAL_SERVER_ERROR,
+                    e.to_string(),
+                ));
+            }
+        },
+    }
+
     tracing::debug!("Calculating genre combo for user: {}", params.username);
     // genre_combo is also guaranteed to be Some<GenreCombo> since there is an AnimeList without any flaws
-    let genre_combo = calculate_genre_combo(animelist_opt.unwrap()).await;
+    let genre_combo = calculate_genre_combo(animelist.clone()).await;
 
     let db_genre_combo = get_genre_combo_with_rankings(&mut conn, genre_combo.id as i32).await;
     if let Err(e) = db_genre_combo {
@@ -170,6 +174,9 @@ pub async fn get_user_recommendations(
 
     add_cached_genre_combo(&mut conn, params.username, genre_combo.id)
         .await
-        .ok();
-    Ok(db_genre_combo.unwrap())
+        .unwrap();
+
+    let mut db_genre_combo = db_genre_combo.unwrap();
+    filter_watched_animes(animelist.animes().as_ref(), &mut db_genre_combo).await;
+    Ok(db_genre_combo)
 }

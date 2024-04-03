@@ -117,9 +117,8 @@ pub struct TOMLConfig {
     pub anote: ANConfigTable,
 }
 
-#[allow(non_snake_case)]#[derive(Debug)]
-
-#[derive(Deserialize)]
+#[allow(non_snake_case)]
+#[derive(Debug, Deserialize)]
 pub struct DbConfigTable {
     pub DB_HOST: String,
     pub DB_NAME: String,
