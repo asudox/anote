@@ -174,7 +174,7 @@ pub async fn get_user_recommendations(
 
     add_cached_genre_combo(&mut conn, params.username, genre_combo.id)
         .await
-        .unwrap();
+        .ok();
 
     let mut db_genre_combo = db_genre_combo.unwrap();
     filter_watched_animes(animelist.animes().as_ref(), &mut db_genre_combo).await;
