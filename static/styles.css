@@ -50,7 +50,7 @@
         justify-content: space-evenly;
     }
 
-    #top-3-animes {
+    #top-3-most-watched {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-evenly;
@@ -60,7 +60,7 @@
         padding-bottom: 5vh;
     }
 
-    #top-3-animes h1 {
+    #top-3-most-watched h1 {
         width: 100%;
         text-align: center;
         margin-top: 5vh;

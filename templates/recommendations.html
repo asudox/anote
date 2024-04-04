@@ -11,8 +11,8 @@
 
 <body>
     <div id="recommendations">
-        <div id="top-3-animes">
-            <h1>Top 3 Animes</h1>
+        <div id="top-3-most-watched">
+            <h1>Top 3 most watched in your genre combination group</h1>
             {% for recommendation in recommendations.anime_scores[0..3] %}
             <a href="https://myanimelist.net/anime/{{ recommendation.0.id }}">
                 <div class="anime-card">
