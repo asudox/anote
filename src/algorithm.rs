@@ -1,5 +1,6 @@
 use crate::structs::*;
 use std::collections::HashMap;
+use std::fmt::Write;
 
 const GENRE_IDS: [u8; 17] = [1, 2, 5, 46, 28, 4, 8, 10, 26, 47, 14, 7, 22, 36, 30, 37, 41];
 
@@ -42,15 +43,13 @@ pub async fn calculate_genre_combo(mut user_animelist: AnimeList) -> GenreCombo 
     // sort genres by weight and make genre_combo_id
     genre_weights_vec.sort_by(|a, b| b.1.cmp(&a.1));
     let top_3_genres = &genre_weights_vec[0..3];
-    let top_3_genre_ids = top_3_genres.iter().map(|x| x.0).collect::<Vec<u8>>();
-    let genre_combo_id = top_3_genre_ids
-        .into_iter()
-        .fold(String::new(), |mut init, x| {
-            let mut x = x.to_string();
-            x.push('0'); // seperator for when extracting genre ids
-            init.push_str(x.as_str());
-            init
+    let genre_combo_id: String = top_3_genres
+        .iter()
+        .fold(String::new(), |mut output, x| {
+            write!(output, "{}0", x.0).unwrap(); // unwrap will never panic here, but it's there just in case
+            output
         });
+            
 
     // Insert top 10 animes into a HashMap with all of them having the score 1
     let mut top_10_anime_ids: Vec<i32> = Vec::with_capacity(10);
